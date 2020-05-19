@@ -13,6 +13,7 @@ import java.util.List;
 // TODO add retry after catching error
 // TODO code commenting
 // TODO add function for counting runtime
+// TODO password protection?
 
 public class LatestCommentToTitle extends BotProcess {
     private final String VIDEO_ID = "l4EjoYLPke0";
