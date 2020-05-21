@@ -1,5 +1,6 @@
 package controller;
 
+import controller.utils.Authorization;
 import logger.FileLogger;
 
 public abstract class BotProcess implements Runnable{
