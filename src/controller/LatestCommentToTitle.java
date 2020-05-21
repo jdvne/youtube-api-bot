@@ -49,7 +49,7 @@ public class LatestCommentToTitle extends BotProcess {
     }
 
     @Override
-    public String getBlurb() {
+    public String getStatus() {
         return "Titles so far: \n" + titles.toString();
     }
 

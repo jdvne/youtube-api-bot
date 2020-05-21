@@ -11,7 +11,7 @@ public abstract class BotProcess implements Runnable{
     int failures = 0;
 
     BotProcess() {
-        // todo uncomment: auth = new Authorization();
+        auth = new Authorization();
         logger = FileLogger.getInstance();
     }
 
@@ -43,12 +43,11 @@ public abstract class BotProcess implements Runnable{
     }
 
     /**
-     * Returns a message relating to the status and overall progress
-     * of the current process.
+     * Returns a message relating to the status of the current process.
      *
      * @return String message
      */
-    public abstract String getBlurb();
+    public abstract String getStatus();
 
     public int getQuotaUsage(){
         return quotaUsage;

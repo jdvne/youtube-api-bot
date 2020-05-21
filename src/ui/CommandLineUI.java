@@ -99,7 +99,10 @@ public class CommandLineUI {
                 println("Quota usage: " + botProcess.getQuotaUsage() + " units.");
                 break;
             case 2:
-                println(botProcess.getBlurb());
+                println(botProcess.getStatus());
+                break;
+            case 3:
+                println(botProcess.getFailures() + "");
                 break;
         }
     }
@@ -107,8 +110,9 @@ public class CommandLineUI {
     private void displayRuntimeOptions(){
         println("\nThe bot is currently running...");
         println("What would you like to do?");
-        println(" 1] See the current quota usage.");
-        println(" 2] Get a status blurb from the bot.");
+        println(" 1] See the quota usage.");
+        println(" 2] Get the bot's status.");
+        println(" 3] See the api request failure count.");
         println("");
         println(" 0] Terminate the bot.");
     }
@@ -120,7 +124,7 @@ public class CommandLineUI {
 
         while(thread.isAlive()){
             displayRuntimeOptions();
-            processRuntimeSelection(getIntegerInput(0, 2));
+            processRuntimeSelection(getIntegerInput(0, 3));
         }
     }
 
