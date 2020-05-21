@@ -13,12 +13,11 @@ import java.util.List;
 // TODO code commenting
 // TODO add function for counting runtime
 // TODO password protection?
-//TODO add retry on failure
 
 public class LatestCommentToTitle extends BotProcess {
     private final String VIDEO_ID = "l4EjoYLPke0";
 
-    private final int ATTEMPT_COUNT = 3;
+    private final int TRY_COUNT = 3;
 
     private final long RETRY_DELAY = 1_000;          // 1 second
     private final long SLEEP_TIME_SHORT = 180_000;   // 180 seconds
@@ -30,12 +29,20 @@ public class LatestCommentToTitle extends BotProcess {
     private List<String> titles;
 
     public LatestCommentToTitle(){
-        try {
-            loadVideoSnippet();
-        } catch (IOException e) {
-            log("Retry limit reached.  Video snippet could not be loaded.");
-            log("Terminating the bot.");
-            System.exit(-1);
+        for(int tries = 0; tries < TRY_COUNT; tries++) {
+            try {
+                loadVideoSnippet();
+                tries = TRY_COUNT;
+
+            } catch (IOException e) {
+                if(tries == TRY_COUNT - 1){
+                    log("Retry limit reached.  Video snippet could not be loaded.");
+                    log("Terminating the bot.");
+                    System.exit(-1);
+                }
+                failures += 1;
+                sleep(RETRY_DELAY);
+            }
         }
 
         titles = new ArrayList<String>();
@@ -104,12 +111,22 @@ public class LatestCommentToTitle extends BotProcess {
 
     public void run() {
         while(!stopped && !Thread.interrupted()){
-            try {
-                loadLatestComment();
-            } catch (IOException e) {
-                log("Retry limit reached.  Latest comment could not be loaded");
-                log("Terminating the bot.");
-                System.exit(-1);
+
+            // try to load latest comment
+            for(int tries = 0; tries < TRY_COUNT; tries++){
+                try {
+                    loadLatestComment();
+                    tries = TRY_COUNT;
+
+                } catch (IOException e) {
+                    if (tries == TRY_COUNT - 1) {
+                        log("Retry limit reached.  Latest comment could not be loaded");
+                        log("Terminating the bot.");
+                        System.exit(-1);
+                    }
+                    failures += 1;
+                    sleep(RETRY_DELAY);
+                }
             }
 
             // cut the latest comment under 100 characters if it is over
@@ -124,13 +141,24 @@ public class LatestCommentToTitle extends BotProcess {
                 sleep(SLEEP_TIME_SHORT);
 
             } else {
-                try {
-                    updateVideoTitle();
-                } catch (IOException e) {
-                    log("Retry limit reached.  Video title could not be updated.");
-                    log("Terminating the bot.");
-                    System.exit(-1);
+
+                // try to update the video title
+                for(int tries = 0; tries < TRY_COUNT; tries++){
+                    try {
+                        updateVideoTitle();
+                        tries = TRY_COUNT;
+
+                    } catch (IOException e) {
+                        if (tries == TRY_COUNT - 1){
+                            log("Retry limit reached.  Video title could not be updated.");
+                            log("Terminating the bot.");
+                            System.exit(-1);
+                        }
+                        failures += 1;
+                        sleep(RETRY_DELAY);
+                    }
                 }
+
                 sleep(SLEEP_TIME_LONG);
             }
         }

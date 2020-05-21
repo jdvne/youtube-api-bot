@@ -8,6 +8,7 @@ public abstract class BotProcess implements Runnable{
 
     boolean stopped = false;
     int quotaUsage = 0;
+    int failures = 0;
 
     BotProcess() {
         // todo uncomment: auth = new Authorization();
@@ -51,6 +52,9 @@ public abstract class BotProcess implements Runnable{
 
     public int getQuotaUsage(){
         return quotaUsage;
+    }
+    public int getFailures(){
+        return failures;
     }
 
 }
