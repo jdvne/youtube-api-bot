@@ -1,6 +1,7 @@
 package ui;
 
 import controller.BotProcess;
+import controller.ClickBaitSwap;
 import controller.LatestCommentToTitle;
 
 import java.util.Scanner;
@@ -26,13 +27,14 @@ public class CommandLineUI {
     public void start(){
         println(title);
         displayBotProcessOptions();
-        processBotProcessSelection(getIntegerInput(1, 1));
+        processBotProcessSelection(getIntegerInput(1, 2));
         runProcess();
     }
 
     private void displayBotProcessOptions(){
         println("Which bot process would you like to use?");
         println(" 1] LatestCommentToTitle");
+        println(" 1] ClickBaitSwap");
     }
 
     /**
@@ -70,6 +72,9 @@ public class CommandLineUI {
         switch(selection) {
             case 1:
                 botProcess = new LatestCommentToTitle();
+                break;
+            case 2:
+                botProcess = new ClickBaitSwap();
                 break;
         }
     }

@@ -7,16 +7,11 @@ public abstract class BotProcess implements Runnable{
     FileLogger logger;
 
     boolean stopped = false;
-
     int quotaUsage = 0;
 
     BotProcess() {
-        auth = new Authorization();
+        // todo uncomment: auth = new Authorization();
         logger = FileLogger.getInstance();
-    }
-
-    public int getQuotaUsage(){
-        return quotaUsage;
     }
 
     /**
@@ -39,13 +34,23 @@ public abstract class BotProcess implements Runnable{
     }
 
     /**
-     * Log a message using the internal Logger.
-     *
+     * Log a message using the provided Logger.
      * @param message message to be logged
      */
     void log(String message) {
         logger.log("(qu: " + quotaUsage + ") " + message);
     }
 
+    /**
+     * Returns a message relating to the status and overall progress
+     * of the current process.
+     *
+     * @return String message
+     */
     public abstract String getBlurb();
+
+    public int getQuotaUsage(){
+        return quotaUsage;
+    }
+
 }
